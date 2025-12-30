@@ -39,7 +39,7 @@ substitutions:
   pms_pm1_name: "${device_name} PM1.0"
   pms_uart_id: pms
   
-i2c:  # Add this section
+i2c:  # 
   sda: ${i2c_sda_pin}
   scl: ${i2c_scl_pin}
   scan: true
@@ -60,5 +60,6 @@ uart:
     rx_pin: ${mh_rx_pin}
     tx_pin: ${mh_tx_pin}
     baud_rate: ${mh_baud_rate}
+
 
   
