@@ -16,17 +16,18 @@ sensor:
       name: "Battery Voltage"
     battery_level:
       name: "Battery SOC"
+      id: battery_soc
 #    entity_category: 
 #    rate:
 #      name: "Battery Charge Rate"
 
   - platform: template
-    name: "Battery Voltage RoC"
+    name: "Battery RoC (60m Avg)"
     id: battery_voltage_rate
-    unit_of_measurement: "V/s"
+    unit_of_measurement: "V/m"
     accuracy_decimals: 4
     entity_category: diagnostic
-    update_interval: 60s  # Adjust based on monitoring needs; shorter for finer resolution
+    update_interval: 30s  # Adjust based on monitoring needs; shorter for finer resolution
     lambda: |-
       float current_voltage = id(battery_voltage).state;  // Assuming 'battery_voltage' is the ID of your MAX17048 voltage sensor
       float current_time = id(esp_uptime).state;  // Uses existing uptime sensor for time delta
@@ -40,13 +41,13 @@ sensor:
       if (delta_t <= 0) {
         return NAN;  // Avoid division by zero or negative time
       }
-      float rate = delta_v / delta_t;  // Rate in V/s; multiply by 3600 for V/hour if preferred
+      float rate = delta_v / delta_t * 60;  // Rate in V/s; multiply by 3600 for V/hour if preferred
       id(prev_voltage) = current_voltage;
       id(prev_time) = current_time;
       return rate;
     filters:
       - sliding_window_moving_average:
-          window_size: 10  # Number of samples to average over (e.g., last 10 minutes if update_interval=60s)
+          window_size: 120  # Number of samples to average over (e.g., last 10 minutes if update_interval=60s | 20@30s=10m, 120@30s=60m ave)
           send_every: 1    # Publish the smoothed value every update
           send_first_at: 1 # Start publishing after the first value
 

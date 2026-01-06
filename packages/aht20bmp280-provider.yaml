@@ -1,7 +1,14 @@
-#packet_transport: !extend
-#  sensors:
-#    - id: ${device_id}_bmp_pressure2  # References the existing sensor ID above
-#      # broadcast_id: optional_custom_name  # Optional: Custom name for broadcasting (defaults to id)          
+# Define and share the battery sensor
+packet_transport: !extend
+  sensors:
+    ${device_name}_bmp_pressure:  # Unique key using substitution (e.g., main1_bat_v_1)
+      sensor:
+        platform: bmp280_i2c  # Your sensor config
+#        address: 0x36
+        id: ${device_name}_bmp_pressure  # Unique ID for referencing
+        internal: true  # Hide from HA by default
+        name: ATMOS Pressure ${friendly_name} 
+        # Add name:, filters, etc., if needed
 
 sensor:
   - platform: bmp280_i2c  #default 0x76
@@ -19,7 +26,7 @@ sensor:
             return x * (9.0/5.0) + 32.0;
     pressure:
       name: "AQ Pressure - BMP"
-      id: ${device_id}_bmp_pressure
+      id: bmp_pressure
 
   - platform: aht10
     variant: AHT20
@@ -39,16 +46,17 @@ sensor:
             window_size: 3
             send_every: 3
             send_first_at: 1
+   
     humidity:
       name: "AQ Humidity - AHT"
       id: aht20_humidity
       accuracy_decimals: 1
       filters:
-        - filter_out: 0.0
-        - median:
-            window_size: 3
-            send_every: 3
-            send_first_at: 1
+      - filter_out: 0.0
+      - median:
+          window_size: 3
+          send_every: 3
+          send_first_at: 1
 
   - platform: template
 #    name: "Temp for Cal - AHT"  # Optional: For visibility in dashboard
@@ -77,7 +85,7 @@ text_sensor:
     update_interval: 15min
 #    icon: "mdi:weather-partly-cloudy"  # Static icon
     lambda: |-
-      float current_pressure = id(${device_id}_bmp_pressure).state;
+      float current_pressure = id(bmp_pressure).state;
       if (current_pressure == NAN || id(prev_pressure) == 0.0) {
         id(prev_pressure) = current_pressure;
         id(pressure_delta) = 0.0;

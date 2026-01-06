@@ -17,8 +17,8 @@ esphome:
   name: ${device_name}
   friendly_name: ${friendly_name}
 
-debug:
-  update_interval: 30s
+#debug:
+#  update_interval: 30s
 
 logger:
   level: VERY_VERBOSE  # Set to highest to enable all runtime select options; lower if you want to restrict
@@ -55,12 +55,13 @@ web_server:
   include_internal: true      
 
 packages:
-#  - !include iaq-project/packages/aht20bmp280.yaml # AHT20-BMP280 t/h/pres
-  - !include iaq-project/packages/aht20.yaml # AHT20 t/h
+  - !include iaq-project/packages/aht20bmp280.yaml # AHT20-BMP280 t/h/pres
+#  - !include iaq-project/packages/aht20.yaml # AHT20 t/h
 #  - !include iaq-project/packages/sgp30.yaml # eCO2, TVOC, Weather Trend (Calc'd)
 #  - !include iaq-project/packages/MH-Z19.yaml # mh-z19 CO2 Sensor
   - !include iaq-project/packages/SSD1306-64x48.yaml  # display2
   - !include iaq-project/packages/SSD1306-128x64.yaml  # display1  
+  - !include iaq-project/packages/display-fonts.yaml  # arial
   - !include iaq-project/packages/max17048.yaml # max17048 Fuel Guage, V, SOC, RoC(calc'd)
   - !include iaq-project/packages/PMSX003.yaml # PMSX003, 7003, PM10, PM2.5, PM1.0
   - !include iaq-project/boards/Board-Seeed-Xiao-ESP32-C3.yaml # Board specific GPIO, etc.

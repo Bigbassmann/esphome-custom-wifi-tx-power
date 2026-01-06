@@ -126,6 +126,7 @@ sensor:
 #    name: "ESP Reset Reason (Raw)"
     id: esp_reset_reason_raw
     entity_category: diagnostic
+    internal: true
     accuracy_decimals: 0
     lambda: |-
       return (float)esp_reset_reason();
