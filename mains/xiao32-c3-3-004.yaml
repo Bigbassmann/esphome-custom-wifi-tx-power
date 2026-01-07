@@ -12,6 +12,7 @@ substitutions:   # Main-Seeed-Xiao-ESP32-C3.yaml
   manual_ip_subnet:  #  255.255.255.0
   ap_ssid: "Xiao32-C3-3-004 Fallback Hotspot" #
   ap_password: "cDz18PDbhSop" #
+  espnow_id: xiao32_3_004  # No hyphens or spaces; valid C++ identifier
   
 esphome:
   name: ${device_name}
@@ -55,12 +56,15 @@ web_server:
   include_internal: true      
 
 packages:
-  - !include iaq-project/packages/aht20bmp280.yaml # AHT20-BMP280 t/h/pres
-#  - !include iaq-project/packages/aht20.yaml # AHT20 t/h
+#  - !include iaq-project/packages/aht20bmp280.yaml # AHT20-BMP280 t/h/pres
+  - !include iaq-project/common/espnow.yaml #
+  - !include iaq-project/packages/bmp280_espnow_pressure_receive.yaml # espnow receive pressure sensor
+  - !include iaq-project/packages/bmp280_espnow_weathertrend_receive.yaml # espnow receive calc'd weather trend
+  - !include iaq-project/packages/aht20.yaml # AHT20 t/h
 #  - !include iaq-project/packages/sgp30.yaml # eCO2, TVOC, Weather Trend (Calc'd)
 #  - !include iaq-project/packages/MH-Z19.yaml # mh-z19 CO2 Sensor
   - !include iaq-project/packages/SSD1306-64x48.yaml  # display2
-  - !include iaq-project/packages/SSD1306-128x64.yaml  # display1  
+  - !include iaq-project/packages/SSD1306-128x64-espnow.yaml  # display1, bmp280 from espnow  
   - !include iaq-project/packages/display-fonts.yaml  # arial
   - !include iaq-project/packages/max17048.yaml # max17048 Fuel Guage, V, SOC, RoC(calc'd)
   - !include iaq-project/packages/PMSX003.yaml # PMSX003, 7003, PM10, PM2.5, PM1.0

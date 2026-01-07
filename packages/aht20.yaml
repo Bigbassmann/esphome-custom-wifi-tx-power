@@ -1,3 +1,7 @@
+# No BMP280 bmp_pressure and calc'd weather_trend locally
+# If pres is NOT local, then pres, weather, display are received via receive/espnow packages
+# receiving device main(s) !includes receiving/espnow packages
+# publishing device main(s) !includes publishing/local packages 
 sensor:
   - platform: aht10
     variant: AHT20

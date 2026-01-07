@@ -12,7 +12,7 @@ substitutions:   # Main-AITrip-ESP32-C3-FN4-Super-Mini.yaml
   manual_ip_subnet: 255.255.255.0
   ap_ssid: "Mini Fallback"
   ap_password: "12345678"
-  device_id: supermini_2  # No hyphens or spaces; valid C++ identifier
+  espnow_id: supermini_2  # No hyphens or spaces; valid C++ identifier
 
 esphome:
   name: ${device_name}
@@ -58,13 +58,15 @@ web_server:
   include_internal: true
 
 packages:
-#  - !include iaq-project/common/espnow.yaml # shared sensor broadcast
+  - !include iaq-project/packages/bmp280_espnow_pressure_publish.yaml # espnow broadcast pressure sensor
+  - !include iaq-project/packages/bmp280_espnow_weathertrend_publish.yaml # espnow broadcast calc'd weather trend
+  - !include iaq-project/common/espnow.yaml # shared sensor broadcast
   - !include iaq-project/packages/aht20bmp280.yaml #AHT20-BMP280 t/h/pres
 #  - !include iaq-project/packages/aht20.yaml # temp/hum sensor
   - !include iaq-project/packages/sgp30.yaml # eCO2, TVOC, 
 #  - !include iaq-project/packages/MH-Z19.yaml #mh-z19 CO2 Sensor
 #  - !include iaq-project/packages/SSD1306-64x48.yaml  # display2
-  - !include iaq-project/packages/SSD1306-128x64.yaml  # display1
+  - !include iaq-project/packages/SSD1306-128x64-local.yaml  # display1 local with bmp280 sensor
   - !include iaq-project/packages/display-fonts.yaml  # arial
   - !include iaq-project/packages/max17048.yaml #max17048 Fuel Guage
   - !include iaq-project/packages/PMSX003.yaml #PMSX003, 7003

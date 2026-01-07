@@ -7,12 +7,12 @@ sensor:
     pm_1_0:
       name: ${pms_pm1_name}
       unit_of_measurement: "µg/m³"
-      accuracy_decimals: 5
+      accuracy_decimals: 2
     pm_2_5:
       name: ${pms_pm2_5_name}
       unit_of_measurement: "µg/m³"
-      accuracy_decimals: 5
+      accuracy_decimals: 2
     pm_10_0:
       name: ${pms_pm10_name}
       unit_of_measurement: "µg/m³"
-      accuracy_decimals: 5
+      accuracy_decimals: 2

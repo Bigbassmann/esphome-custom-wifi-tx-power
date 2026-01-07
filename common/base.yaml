@@ -1,8 +1,10 @@
 esphome:
   includes:
-    - <esp_wifi.h>  #<esp_wifi.h>  # Built-in ESP-IDF header for the function
-    - <cstdlib>  #<cstdlib> # Added: For strtof (safe float parsing without exceptions)
-    - <driver/gpio.h>  # Add this for gpio_get_level
+    - <esp_wifi.h>  # For esp_wifi_get_mac and esp_wifi_get_channel
+    - <cstdlib>  # For strtof (if needed elsewhere)
+    - <cstdio>  # Added: For snprintf
+    - <driver/gpio.h>  # For gpio_get_level (if needed elsewhere)
+  
   on_boot:
     priority: -100
     then:
@@ -96,7 +98,7 @@ esphome:
             lambda: 'return !id(sleep_allowed);'
           then:
             - deep_sleep.prevent: deep_sleep_1
-#      - script.execute: mhz19_warmup
+
 interval:
   - interval: 10s  # Runs shortly after boot; adjust interval as needed (e.g., 10s)
     then:
@@ -121,6 +123,19 @@ interval:
                 }
                 ESP_LOGI("wakeup", "[LATE] Wakeup cause: %d (%s)", wakeup_cause, wakeup_str);
                 id(wakeup_cause_text).publish_state(wakeup_str);  //# Redundant but ensures publish post-WiFi
+  - interval: 15s
+    then:
+      - lambda: |-
+          uint8_t mac[6];
+          esp_wifi_get_mac(WIFI_IF_STA, mac);
+          char mac_str[18];
+          snprintf(mac_str, sizeof(mac_str), "%02X:%02X:%02X:%02X:%02X:%02X", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+          ESP_LOGI("boot", "WiFi MAC Address: %s", mac_str);
+
+          uint8_t channel;
+          wifi_second_chan_t second;  // Unused, but required for the function
+          esp_wifi_get_channel(&channel, &second);
+          ESP_LOGI("boot", "WiFi Channel: %d", channel);
 
 wifi:
   ssid: !secret wifi_ssid  # Shared secret
@@ -182,9 +197,3 @@ button:
   - platform: factory_reset
     name: "ESP Factory Reset"
     entity_category: config
-
-#script:
- # - id: mhz19_warmup
-  #  then:
-   #   - delay: 180s  # 3 minutes
-    #  - logger.log: "MH-Z19 warmed up and ready."

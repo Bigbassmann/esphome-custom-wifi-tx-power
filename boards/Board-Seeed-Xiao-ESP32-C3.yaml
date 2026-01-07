@@ -29,7 +29,7 @@ esp32:
 
 substitutions:
   wakeup_pin: GPIO4  #A2/D2/ADC1_CH4, safe/Reset/UART1_TX
-  wakeup_pin_mode: KEEP_AWAKE # KEEP_AWAKE, IGNORE, INVERT_WAKEUP
+  wakeup_pin_mode: INVERT_WAKEUP #KEEP_AWAKE # KEEP_AWAKE, IGNORE, INVERT_WAKEUP
 #   usb_detect_pin: GPIO5 #ADC1_CH5, safe/D3 - was 9/USB power (e.g., high if powered)/wired to VBUS for battery monitor
   stay_awake_pin: GPIO10 # D10/MOSI/Status LED/SPI
   battery_adc_pin: GPIO3 #ADC1_CH3, safe/A1/D1/ADC1_CH3. Ideal for battery voltage (analog read with divider for 3.7V LiPo)
