@@ -66,7 +66,8 @@ packages:
   - !include iaq-project/packages/sgp30.yaml # eCO2, TVOC, 
 #  - !include iaq-project/packages/MH-Z19.yaml #mh-z19 CO2 Sensor
 #  - !include iaq-project/packages/SSD1306-64x48.yaml  # display2
-  - !include iaq-project/packages/SSD1306-128x64-local.yaml  # display1 local with bmp280 sensor
+#  - !include iaq-project/packages/SSD1306-128x64-local.yaml  # display1 local with bmp280 sensor
+  - !include iaq-project/packages/SSD1306-128x64-local-w-countdown.yaml  # with countdown to sleep. display1/2, local (with bmp280 sensor) or remote    
   - !include iaq-project/packages/display-fonts.yaml  # arial
   - !include iaq-project/packages/max17048.yaml #max17048 Fuel Guage
   - !include iaq-project/packages/PMSX003.yaml #PMSX003, 7003

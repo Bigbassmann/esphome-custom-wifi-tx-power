@@ -246,6 +246,7 @@ interval:
                       ESP_LOGW("sleep", "[COUNTDOWN] Entering deep sleep NOW (confirmed allowed).");
                   - lambda: 'id(is_sleeping) = true;'
                   - lambda: 'id(active_sleep_duration).publish_state(id(sleep_duration_seconds));'
+                  - lambda: 'id(display1).turn_off();'
                   - delay: 500ms
                   - deep_sleep.enter:
                       id: deep_sleep_1

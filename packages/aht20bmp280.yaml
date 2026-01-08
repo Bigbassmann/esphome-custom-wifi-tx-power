@@ -4,7 +4,6 @@
 # if pres is NOT local, then pres, weather, display are received via receive/espnow packages
 # receiving device main(s) !includes receiving/espnow packages
 # publishing device main(s) !includes publishing/local packages 
-espnow:
 sensor:
   - platform: bmp280_i2c  #default 0x76
     address: 0x77 # 0x76 or 0x77
@@ -29,13 +28,12 @@ sensor:
               level: DEBUG
               format: "Local pressure updated: %.2f hPa"
               args: ['x']
-          - espnow.broadcast:
+          - espnow.send:
+              address: "94:A9:90:6D:22:70"  # Receiver MAC (from your xiao32-c3-3-004, check logs or WiFi scan)
               data: !lambda |-
-                float pressure = id(remote_pressure_global);
-                std::vector<uint8_t> data_vec(sizeof(float));
-                memcpy(data_vec.data(), &pressure, sizeof(float));
-                ESP_LOGD("espnow", "Broadcasting pressure: %.2f hPa", pressure);  //# Moved before return
-                return data_vec;
+                std::string payload = "P:" + std::to_string(id(remote_pressure_global));
+                ESP_LOGD("espnow", "Sending pressure: %s to receiver", payload.c_str());
+                return std::vector<uint8_t>(payload.begin(), payload.end());
 
   - platform: aht10
     variant: AHT20

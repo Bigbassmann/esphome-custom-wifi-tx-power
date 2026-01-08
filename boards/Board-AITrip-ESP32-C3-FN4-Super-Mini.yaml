@@ -48,7 +48,7 @@ substitutions:
   pms_pm10_name: "Air Quality-PM 10.0"
   pms_pm2_5_name: "Air Quality-PM 2.5"
   pms_pm1_name: "Air Quality-PM 1.0"
-  pms_uart_id: pms
+  pms_uart_id: pms  #uart_id: uart_bus1
   esp32_board: esp32-c3-devkitm-1
   esp_framework_type: esp-idf
 
@@ -68,7 +68,14 @@ uart:
     rx_pin: ${pms_rx_pin}
     tx_pin: ${pms_tx_pin}
     baud_rate: ${pms_baud_rate}
-    rx_buffer_size: 512 # test 
+    rx_buffer_size: 512 # test
+#    debug:   # only debug for minimal https://esphome.io/components/uart/#debugging
+#      direction: BOTH
+#      dummy_receiver: false
+#      after:
+#        delimiter: "\n"
+#      sequence:
+#        - lambda: UARTDebug::log_string(direction, bytes);    
     
   - id: ${mh_uart_id}
     rx_pin: ${mh_rx_pin}

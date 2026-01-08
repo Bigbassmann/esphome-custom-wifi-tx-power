@@ -47,7 +47,7 @@ text_sensor:
       }
     update_interval: never
     
-select:
+select:    
   - platform: template
     name: "Logger Level"
     id: logger_level_select

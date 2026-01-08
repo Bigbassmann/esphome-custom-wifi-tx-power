@@ -1,6 +1,3 @@
-
-espnow:
-
 globals:
   - id: remote_weather_global
     type: std::string
@@ -19,7 +16,7 @@ text_sensor:
   - platform: template
     name: "AQ Weather Trend Local"
     id: weather_trend
-    internal: true
+#    internal: true
     update_interval: 60s
     icon: "mdi:weather-partly-cloudy" # Static icon
     lambda: |-
@@ -44,8 +41,10 @@ text_sensor:
       return esphome::optional<std::string>(trend);
     on_value:
       then:
-        - lambda: 'id(remote_weather_global) = x;'  # Optional: Keep for persistence
-        - espnow.broadcast:
+        - lambda: 'id(remote_weather_global) = x;'
+        - espnow.send:
+            address: "94:A9:90:6D:22:70"
             data: !lambda |-
-              ESP_LOGD("espnow", "Broadcasting weather trend: %s", x.c_str());
-              return std::vector<uint8_t>(x.begin(), x.end());      
+              std::string payload = "W:" + x;
+              ESP_LOGD("espnow", "Sending weather trend: %s to receiver", payload.c_str());
+              return std::vector<uint8_t>(payload.begin(), payload.end());
